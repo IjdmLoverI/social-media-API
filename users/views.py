@@ -3,6 +3,7 @@ from rest_framework import generics
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
+from users.permissions import IsOwnerOrReadOnly
 from users.serializers import UserSerializer
 
 
@@ -18,6 +19,16 @@ class ManageUserView(generics.RetrieveUpdateAPIView):
 
     def get_object(self):
         return self.request.user
+
+
+class UserDetailView(generics.RetrieveAPIView):
+    serializer_class = UserSerializer
+    queryset = get_user_model().objects.all()
+
+    def get_permissions(self):
+        if self.request.method in ["GET"]:
+            return [IsAuthenticated()]
+        return [IsAuthenticated(), IsOwnerOrReadOnly()]
 
 
 class UserListView(generics.ListAPIView):
