@@ -1,8 +1,12 @@
+import pathlib
+import uuid
+
 from django.contrib.auth.models import (
     AbstractUser,
     BaseUserManager,
 )
 from django.db import models
+from django.utils.text import slugify
 from django.utils.translation import gettext as _
 
 
@@ -40,11 +44,17 @@ class UserManager(BaseUserManager):
         return self._create_user(email, password, **extra_fields)
 
 
+def user_profile_image_path(instance: "User", filename: str) -> pathlib.Path:
+    filename = f"{slugify(instance.email)}-{uuid.uuid4()}" + pathlib.Path(filename).suffix
+    return pathlib.Path("upload/profile_img/") / pathlib.Path(filename)
+
+
 class User(AbstractUser):
     username = None
     email = models.EmailField(_("email address"), unique=True)
     bio = models.TextField(null=True, blank=True)
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
+    profile_image = models.ImageField(null=True, upload_to=user_profile_image_path)
 
     objects = UserManager()

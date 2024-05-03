@@ -9,6 +9,7 @@ class UserSerializer(serializers.ModelSerializer):
             "id",
             "email",
             "password",
+            "profile_image",
             "bio",
             "is_staff"
         )
@@ -30,4 +31,4 @@ class UserSerializer(serializers.ModelSerializer):
 class UserListSerializer(serializers.ModelSerializer):
     class Meta:
         model = get_user_model()
-        fields = ("id", "email", "is_staff")
+        fields = ("id", "profile_image", "email", "is_staff")

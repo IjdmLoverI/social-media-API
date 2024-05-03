@@ -22,6 +22,8 @@ class ManageUserView(generics.RetrieveUpdateAPIView):
 
 class UserListView(generics.ListAPIView):
     serializer_class = UserSerializer
+    authentication_classes = [JWTAuthentication]
+    permission_classes = (IsAuthenticated,)
 
     def get_queryset(self):
         return get_user_model().objects.all()
