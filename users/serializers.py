@@ -3,6 +3,9 @@ from rest_framework import serializers
 
 
 class UserSerializer(serializers.ModelSerializer):
+    followings = serializers.SerializerMethodField()
+    followers = serializers.SerializerMethodField()
+
     class Meta:
         model = get_user_model()
         fields = (
@@ -11,10 +14,21 @@ class UserSerializer(serializers.ModelSerializer):
             "password",
             "profile_image",
             "bio",
+            "followings",
+            "followers",
             "is_staff"
         )
         read_only_fields = ("id", "is_staff")
         extra_kwargs = {"password": {"write_only": True, "min_length": 5}}
+
+    def get_followings(self, obj):
+        return [user.email for user in obj.followings.all()]
+
+    def get_followers(self, obj):
+        # Query to find all users who have the current user in their followings
+        user = get_user_model()
+        followers = user.objects.filter(followings=obj)
+        return [user.email for user in followers]
 
     def create(self, validated_data):
         return get_user_model().objects.create_user(**validated_data)
