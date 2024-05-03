@@ -141,3 +141,5 @@ SPECTACULAR_SETTINGS = {
         "defaultModelExpandDepth": 2,
     },
 }
+
+AUTH_USER_MODEL = 'users.User'
