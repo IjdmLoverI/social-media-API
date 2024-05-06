@@ -21,6 +21,7 @@ class PostSerializer(serializers.ModelSerializer):
     def get_owner(self, obj):
         return obj.owner.email
 
+
 class PostCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
