@@ -25,7 +25,6 @@ class UserSerializer(serializers.ModelSerializer):
         return [user.email for user in obj.followings.all()]
 
     def get_followers(self, obj):
-        # Query to find all users who have the current user in their followings
         user = get_user_model()
         followers = user.objects.filter(followings=obj)
         return [user.email for user in followers]
