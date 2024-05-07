@@ -2,6 +2,9 @@ from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
 
+User = get_user_model()
+
+
 class UserSerializer(serializers.ModelSerializer):
     followings = serializers.SerializerMethodField()
     followers = serializers.SerializerMethodField()
@@ -25,8 +28,7 @@ class UserSerializer(serializers.ModelSerializer):
         return [user.email for user in obj.followings.all()]
 
     def get_followers(self, obj):
-        user = get_user_model()
-        followers = user.objects.filter(followings=obj)
+        followers = User.objects.filter(followings=obj)
         return [user.email for user in followers]
 
     def create(self, validated_data):
