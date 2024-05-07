@@ -19,3 +19,6 @@ class Post(models.Model):
     body = models.TextField(null=True, blank=True)
     image = models.ImageField(null=True, upload_to=post_image_path)
     posted_on = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.title

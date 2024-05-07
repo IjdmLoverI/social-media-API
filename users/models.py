@@ -58,3 +58,6 @@ class User(AbstractUser):
     profile_image = models.ImageField(null=True, upload_to=user_profile_image_path)
     followings = models.ManyToManyField("self", related_name="following", symmetrical=False, blank=True)
     objects = UserManager()
+
+    def __str__(self):
+        return self.email
