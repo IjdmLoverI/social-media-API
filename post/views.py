@@ -25,6 +25,7 @@ class PostListView(generics.ListAPIView):
 
         if email:
             queryset = queryset.filter(owner__email__icontains=email)
+        return queryset
 
     @extend_schema(
         parameters=[
