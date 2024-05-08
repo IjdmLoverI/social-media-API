@@ -25,11 +25,10 @@ class UserSerializer(serializers.ModelSerializer):
         extra_kwargs = {"password": {"write_only": True, "min_length": 5}}
 
     def get_followings(self, obj):
-        return [user.email for user in obj.followings.all()]
+        return obj.followings.values_list("email", flat=True)
 
     def get_followers(self, obj):
-        followers = User.objects.filter(followings=obj)
-        return [user.email for user in followers]
+        return obj.followers.values_list("email", flat=True)
 
     def create(self, validated_data):
         return get_user_model().objects.create_user(**validated_data)
